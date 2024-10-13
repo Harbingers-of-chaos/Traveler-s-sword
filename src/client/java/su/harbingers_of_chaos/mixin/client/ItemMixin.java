@@ -21,14 +21,28 @@ import static com.mojang.text2speech.Narrator.LOGGER;
 
 @Mixin(Item.class)
 public class ItemMixin {
+    @Shadow @Final private static Logger LOGGER;
     private Item item = (Item) (Object) this;
     @Inject(method = "use", at = @At("HEAD"))
     private void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
         if (item == Items.GOLDEN_SWORD) {
-            double x = Math.cos(user.getYaw())*Math.sin(user.getYaw());
-            double y = Math.cos(user.getYaw())*Math.sin(user.getYaw());
-            double z = Math.cos(user.getPitch());
-            user.addVelocity(x, z, y);
+            long a = System.currentTimeMillis();
+            double yaw = Math.toRadians(user.getYaw()+180);
+            double pitch = Math.toRadians(user.getPitch()+90);
+            double cosYaw = Math.cos(yaw);
+            double sinYaw = Math.sin(yaw);
+            double cosPitch = Math.cos(pitch);
+            double sinPitch = Math.sin(pitch);
+            double x = sinYaw * sinPitch;
+            double y = cosPitch;
+            double z = cosYaw * sinPitch;
+            LOGGER.info("Yaw: " + user.getYaw());
+            LOGGER.info("Pitch: " + user.getPitch());
+            LOGGER.info("X: " + x);
+            LOGGER.info("Y: " + y);
+            LOGGER.info("Z: " + z);
+            user.addVelocity(x, y,-z);
+            LOGGER.info("Time " + System.currentTimeMillis());
         }
     }
 }

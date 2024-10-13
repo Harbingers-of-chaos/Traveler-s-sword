@@ -15,15 +15,11 @@
 	"icon": "assets/travelers-sword/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"su.harbingers_of_chaos.TravelersSword"
-		],
 		"client": [
 			"su.harbingers_of_chaos.TravelersSwordClient"
 		]
 	},
 	"mixins": [
-		"travelers-sword.mixins.json",
 		{
 			"config": "travelers-sword.client.mixins.json",
 			"environment": "client"
